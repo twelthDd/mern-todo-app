@@ -3,14 +3,14 @@ import { useQueryClient, useMutation } from "react-query";
 import createTodoRequest from "../api/createTodoRequest";
 
 export const CreateTodoForm = () => {
-  const [text, setText] = React.useState("");
+  const [text, setText] = useState("");
   const queryClient = useQueryClient();
 
-  const { Mutation: createTodo } = useMutation(
+  const { mutate: createTodo } = useMutation(
     (newTodo) => createTodoRequest(newTodo),
     {
       onSettled: () => {
-        queryClient.invalidateQueries("todos");
+        queryClient.invalidateQueries('todos');
       },
     }
   );
@@ -23,7 +23,8 @@ export const CreateTodoForm = () => {
         });
       }}
     >
-      <input onChange={(e) => setText(e.target.value)} type="text" />
+      <input onChange={(e) => setText(e.target.value)} 
+      type="text" />
       <button>Create</button>
     </form>
   );

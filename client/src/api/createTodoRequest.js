@@ -1,6 +1,6 @@
-import { API_URL } from "./config";
+import { API_URL, token} from "./config";
 
-export default (todo, token) => {
+export default (todo) => {
   return fetch(`${API_URL}/todos`, {
     method: "POST",
     headers: {
