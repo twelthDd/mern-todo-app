@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQueryClient, useMutation } from "react-query";
 import createTodoRequest from "../api/createTodoRequest";
 
@@ -10,7 +10,7 @@ export const CreateTodoForm = () => {
     (newTodo) => createTodoRequest(newTodo),
     {
       onSettled: () => {
-        queryClient.invalidateQueries('todos');
+        queryClient.invalidateQueries("todos");
       },
     }
   );
@@ -18,13 +18,18 @@ export const CreateTodoForm = () => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        if (!text) return;
         createTodo({
           text,
         });
+        setText("");
       }}
     >
-      <input onChange={(e) => setText(e.target.value)} 
-      type="text" />
+      <input
+        onChange={(e) => setText(e.target.value)}
+        type="text"
+        value={text}
+      />
       <button>Create</button>
     </form>
   );

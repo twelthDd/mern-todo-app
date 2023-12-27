@@ -1,8 +1,10 @@
-// import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useQueryClient, useMutation } from "react-query";
 import updateTodoRequest from "../api/updateTodoRequest";
 import DeleteTodoRequest from "../api/DeleteTodoRequest";
+import { debounce } from "lodash";
 export const TodoItem = ({ todo }) => {
+  const [text, setText] = useState(todo.text);
   const queryClient = useQueryClient();
 
   const { mutate: updateTodo } = useMutation(
@@ -23,6 +25,19 @@ export const TodoItem = ({ todo }) => {
     }
   );
 
+  const debouncedUpdateTodo = useCallback(debounce(updateTodo, 1000), [
+    updateTodo,
+  ]);
+
+  useEffect(() => {
+    if (text !== todo.text) {
+      debouncedUpdateTodo({
+        ...todo,
+        text,
+      });
+    }
+  }, [text]);
+
   return (
     <div>
       <input
@@ -37,13 +52,8 @@ export const TodoItem = ({ todo }) => {
       />
       <input
         type="text"
-        value={todo.text}
-        onChange={(e) =>
-          updateTodo({
-            ...todo,
-            text: e.target.value,
-          })
-        }
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
       <button onClick={() => deleteTodo(todo)}>Delete</button>
     </div>

@@ -1,22 +1,15 @@
 import "./App.css";
-// import { useEffect, useState } from "react";
-import readTodosRequest from "./api/readTodosRequest.js";
-import { useQuery } from "react-query";
-import ClipLoader from "react-spinners/ClipLoader";
-import { TodoItem } from "./components/TodoItem.jsx";
-import { CreateTodoForm } from "./components/CreateTodoForm.jsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage.jsx";
+import { TodoPage } from "./pages/TodoPage.jsx";
 
 function App() {
-  const { isLoading, data: todos } = useQuery("todos", readTodosRequest);
-
   return (
     <div className="App">
-      {isLoading ? (
-        <ClipLoader size={150} />
-      ) : (
-        todos.map((todo) => <TodoItem todo={todo} key={todo._id} />)
-      )}
-      <CreateTodoForm />
+      <Routes>
+        <Route path="/" element={<TodoPage />} />
+        <Route path="login" element={<LoginPage />} />
+      </Routes>
     </div>
   );
 }
